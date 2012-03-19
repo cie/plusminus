@@ -1,16 +1,30 @@
 = plusminus
 
-Description goes here.
+This gem provides a way to calculate uncertainties of measurements. 
+
+    5.129213.pm(0.01).to_s    #=> "5.13"
+
+You can access the +value+ and +delta+ fields:
+
+    5.129213.pm(0.01).value   #=> 5.129213
+    5.129213.pm(0.01).delta   #=> 0.01
+
+Error propagation is handled for operations
+
+    3.2.pm(0.1) + 4.5.pm(0.1)
+    # => 7.7.pm(0.2)
+    3.2.pm(0.1) * 4.5.pm(0.1)
+    # => 14.4.pm(0.77)
+
+
+
 
 == Contributing to plusminus
  
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
-* Fork the project.
-* Start a feature/bugfix branch.
-* Commit and push until you are happy with your contribution.
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Fork
+* Branch
+* Commit
+* Pull request
 
 == Copyright
 

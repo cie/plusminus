@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "plusminus"
   gem.homepage = "http://github.com/cie/plusminus"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A library that provides uncertainty and error propagation calculations for floats}
+  gem.description = %Q{A library that provides uncertainty and error propagation calculations for floats. It displays the appropriate number of digits when a number is outputted, can convert to latex using different formats.}
   gem.email = "kallo.bernat@gmail.com"
   gem.authors = ["Bernát Kalló"]
   # dependencies defined in Gemfile
