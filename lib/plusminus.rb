@@ -15,12 +15,20 @@ class Numeric
   def to_pm
     Plusminus::PlusminusFloat.new self, 0
   end
+
+  def delta
+    0
+  end
 end
 
 
 class Float
   def to_pm
     Plusminus::PlusminusFloat.new self, 10.0**-Float::DIG
+  end
+
+  def delta
+    10**-Float::DIG
   end
 end
 

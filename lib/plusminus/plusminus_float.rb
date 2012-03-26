@@ -20,7 +20,7 @@ class Plusminus::PlusminusFloat < Numeric
   def coerce other
     case other
     when Numeric
-      return self, other
+      return other.to_pm, self
     else
       raise ArgumentError "#{other} cannot be coerced to #{self.class}"
     end
@@ -28,12 +28,12 @@ class Plusminus::PlusminusFloat < Numeric
 
   def + other
     other = other.to_pm
-    (self.value + other.value).pm(self.delta + other.delta)
+    (@value + other.value).pm(@delta + other.delta)
   end
 
   def - other
     other = other.to_pm
-    (self.value - other.value).pm(self.delta + other.delta)
+    (@value - other.value).pm(@delta + other.delta)
   end
 
   def * other
@@ -88,7 +88,8 @@ class Plusminus::PlusminusFloat < Numeric
   def fmt
     unless defined? @fmt
       @fmt = DEFAULT_FMT.dup
-      case self
+      digits = sig_digits
+      case @value
       when -0.01 ... 0.01 then 
         @fmt.mode!(:sci, sig_digits)
       else 
@@ -101,13 +102,19 @@ class Plusminus::PlusminusFloat < Numeric
 
   # returns the number of significant digits
   def sig_digits 
-    Math.log(@value.abs,10).to_i + 1 - Math.log(@delta,10) + Math.log(5,10)
+    return 0 if @value == 0
+    return Float::DIG if @delta == 0
+    Math.log(@value.abs,10).floor + 1.9999 - Math.log(@delta*2,10)
   end
 
   # produces a string of the number with the appropriate number of decimal
   # digits
+  def nio_write fmt=nil
+    @value.nio_write(fmt || self.fmt)
+  end
+
   def to_s
-    @value.nio_write(fmt)
+    @value.to_s
   end
 
   def inspect
@@ -119,21 +126,25 @@ class Plusminus::PlusminusFloat < Numeric
     s = @value.nio_write(fmt || self.fmt)
     percent = s =~ /%\z/
     s.sub!(/%\z/, "")
-    mantissa, exponent = s.split("e")
+    mantissa, exponent = s.split(/e/i)
     if exponent
       exponent.sub!(/\A-0*/, "-").sub!(/\A0*/, "")
-      "#{mantissa}\\cdot 10^{#{exponent}}"
+      res = "#{mantissa}\\cdot 10^{#{exponent}}"
     else
-      mantissa
-    end << (percent ? "\\%" : "")
+      res = mantissa
+    end
+    res << "\\%" if percent
+    res.respond_to?(:latex!) ? res.latex! : res
   end
 
   def to_latex_pm
-    "#{to_latex} \\pm #{@delta.pm(1).to_latex}"
+    res = "#{to_latex} \\pm #{@delta.pm_rel(0.1).to_latex}"
+    res.respond_to?(:latex!) ? res.latex! : res
   end
 
   def to_latex_math_pm
-    "$#{to_latex_pm}$"
+    res = "$#{to_latex_pm}$"
+    res.respond_to?(:latex!) ? res.latex! : res
   end
 
 end
