@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "a",
     "lib/plusminus.rb",
     "lib/plusminus/plusminus_float.rb",
+    "plusminus.gemspec",
     "spec/plusminus_spec.rb",
     "spec/spec_helper.rb"
   ]
