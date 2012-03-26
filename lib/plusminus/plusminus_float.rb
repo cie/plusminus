@@ -17,6 +17,10 @@ class Plusminus::PlusminusFloat < Numeric
     @value
   end
 
+  def hash
+    @value.hash
+  end
+
   def coerce other
     case other
     when Numeric
