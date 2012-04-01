@@ -133,7 +133,7 @@ class Plusminus::PlusminusFloat < Numeric
     mantissa, exponent = s.split(/e/i)
     if exponent
       exponent.sub!(/\A-0*/, "-").sub!(/\A0*/, "")
-      res = "#{mantissa}\\cdot 10^{#{exponent}}"
+      res = "\\ensuremath{#{mantissa}\\cdot 10^{#{exponent}}}"
     else
       res = mantissa
     end
