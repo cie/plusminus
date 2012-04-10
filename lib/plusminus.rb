@@ -33,6 +33,37 @@ class Float
 end
 
 
+module Plusminus
+
+  FORMATTING_METHODS = %w(
+    sep
+    mode
+    prec
+    grouping
+    show_all_digits
+    approx_mode
+    insignificant_digits
+    sci_digits
+    show_plus
+    show_exp_plus
+    rep
+    width
+    pad0s
+    base
+    percent
+  )
+
+  # define formatting methods
+  FORMATTING_METHODS.each do |m|
+    instance_eval <<-EOT
+      def #{m}! *args
+        Plusminus::PlusminusFloat::DEFAULT_FMT.#{m}! *args
+        self
+      end
+    EOT
+  end
+end
+
 
 require File.expand_path File.dirname(__FILE__) + "/plusminus/plusminus_float.rb"
 

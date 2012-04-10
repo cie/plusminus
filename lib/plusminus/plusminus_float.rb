@@ -92,7 +92,6 @@ class Plusminus::PlusminusFloat < Numeric
   def fmt
     unless defined? @fmt
       @fmt = DEFAULT_FMT.dup
-      digits = sig_digits
       case @value
       when -0.01 ... 0.01 then 
         @fmt.mode!(:sci, sig_digits)
@@ -102,6 +101,15 @@ class Plusminus::PlusminusFloat < Numeric
     end
 
     @fmt
+  end
+
+  Plusminus::FORMATTING_METHODS.each do |m|
+    class_eval <<-EOT
+      def #{m}! *args
+        fmt.#{m}! *args
+        self
+      end
+    EOT
   end
 
   # returns the number of significant digits
@@ -131,12 +139,18 @@ class Plusminus::PlusminusFloat < Numeric
     percent = s =~ /%\z/
     s.sub!(/%\z/, "")
     mantissa, exponent = s.split(/e/i)
+
+    # if exponential form
     if exponent
+      # strip decimal point or comma from end
+      mantissa.sub!(/[^0-9a-zA-Z]+\z/, "") 
+
       exponent.sub!(/\A-0*/, "-").sub!(/\A0*/, "")
       res = "\\ensuremath{#{mantissa}\\cdot 10^{#{exponent}}}"
     else
       res = mantissa
     end
+
     res << "\\%" if percent
     res.respond_to?(:latex!) ? res.latex! : res
   end
