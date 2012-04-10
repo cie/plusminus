@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "plusminus"
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bern\u{e1}t Kall\u{f3}"]
-  s.date = "2012-04-01"
+  s.date = "2012-04-10"
   s.description = "A library that provides uncertainty and error propagation calculations for floats. It displays the appropriate number of digits when a number is outputted, can convert to latex using different formats."
   s.email = "kallo.bernat@gmail.com"
   s.extra_rdoc_files = [
